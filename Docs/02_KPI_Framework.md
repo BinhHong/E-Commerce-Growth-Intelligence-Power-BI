@@ -217,6 +217,46 @@ DIVIDE (
 )
 ```
 
+## Order Type Order Share
+- definition: percentage of completed orders which are classified depending on filter context.
+
+```
+Order Type Order Share = 
+DIVIDE(
+    [Orders by Order Date],
+    CALCULATE(
+        [Orders by Order Date],
+        REMOVEFILTERS(Orders[order_type])
+    )
+)
+```
+
+## Order Type Revenue Share
+- definition: percentage of revenue coming from orders which are classified depending on filter context.
+
+```
+Order Type Revenue Share = 
+DIVIDE(
+    [Revenue by Order Date],
+    CALCULATE(
+        [Revenue by Order Date],
+        REMOVEFILTERS(Orders[order_type])
+    )
+)
+```
+
+## Basket Contribution Share
+- definition: returns `Order Type Order Share` or `Order Type Revenue Share` depending on which metric is chosen.
+
+```
+Basket Contribution Share = 
+SWITCH(
+    SELECTEDVALUE('Basket Share Metric'[Metric]),
+    "Order Share", [Order Type Order Share],
+    "Revenue Share", [Order Type Revenue Share]
+)
+```
+
 # 4. Product Metrics
 
 ## Units Sold by Product
